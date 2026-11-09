@@ -1,0 +1,15 @@
+{
+  // 静的アセットのみ（Worker のスクリプトは置かない）
+  "name": "azihsoyn-dev",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  // azihsoyn.dev で公開する。初回のデプロイで DNS レコードと証明書が自動で作られる
+  "routes": [{ "pattern": "azihsoyn.dev", "custom_domain": true }],
+  // 同じ中身が別の URL に出ないよう、*.workers.dev では公開しない
+  "workers_dev": false,
+  "preview_urls": false
+}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}#{{ term.name }} | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="description" content="#{{ term.name }} の記事一覧">
+  <link rel="canonical" href="{{ term.permalink | safe }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="#{{ term.name }} | {{ config.title }}">
+  <meta property="og:description" content="#{{ term.name }} の記事一覧">
+  <meta property="og:url" content="{{ term.permalink | safe }}">
+{% endblock meta %}
+{% block content %}
+<div class="wrap">
+  <header class="page-header">
+    <p class="label mono"><a href="{{ get_url(path='tags/', trailing_slash=true) }}">Tags</a> /</p>
+    <h1>#{{ term.name }}</h1>
+  </header>
+  {{ <post_list pages={term.pages} /> }}
+</div>
+{% endblock content %}

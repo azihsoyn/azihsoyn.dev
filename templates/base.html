@@ -1,0 +1,114 @@
+<!doctype html>
+{%- set x = config.extra %}
+{#- 一覧（data-styles など）は設定を変えられる時だけ出す。出さなければ、前に選んで保存された値も使われない #}
+<html lang="{{ lang }}" data-style="{{ x.styles[0].id }}" data-accent="{{ x.accents[0].id }}" data-font="{{ x.fonts[0].id }}"
+  {%- if x.picker %}
+  data-styles="{% for o in x.styles %}{{ o.id }}{% if not loop.last %} {% endif %}{% endfor %}"
+  data-accents="{% for o in x.accents %}{{ o.id }}{% if not loop.last %} {% endif %}{% endfor %}"
+  data-fonts="{% for o in x.fonts %}{{ o.id }}{% if not loop.last %} {% endif %}{% endfor %}"
+  {%- endif %}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  {%- block meta %}
+  <meta name="description" content="{{ config.description }}">
+  <link rel="canonical" href="{{ config.base_url }}/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ config.title }}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:url" content="{{ config.base_url }}/">
+  {%- endblock meta %}
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="color-scheme" content="light dark">
+  <!-- 描画前に配色とテーマを決めるため defer を付けない -->
+  <script src="{{ get_url(path='theme-init.js', cachebust=true) }}"></script>
+  <!-- Pagefind の CSS は :root に既定の色を持つので、先に読み込んで style.css で上書きする -->
+  <link rel="stylesheet" href="{{ get_url(path='pagefind/pagefind-component-ui.css') }}">
+  <link rel="stylesheet" href="{{ get_url(path='style.css', cachebust=true) }}">
+  {%- if x.fonts[0].file %}
+  <link rel="preload" href="{{ get_url(path=x.fonts[0].file) }}" as="font" type="font/woff2" crossorigin>
+  {%- endif %}
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='feed.xml', trailing_slash=false) }}">
+  <link rel="icon" href="{{ get_url(path='favicon.svg') }}" type="image/svg+xml">
+  <script src="{{ get_url(path='theme.js', cachebust=true) }}" defer></script>
+  <script src="{{ get_url(path='pagefind/pagefind-component-ui.js') }}" type="module"></script>
+  <!-- リンクにカーソルを乗せたら次のページを先読みして描いておく（Speculation Rules） -->
+  <script type="speculationrules">
+  {"prerender": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}
+  </script>
+  {%- block extra_head %}{% endblock extra_head %}
+  {%- if config.extra.cf_analytics_token %}
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ config.extra.cf_analytics_token }}"}'></script>
+  {%- endif %}
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="site-title" href="{{ config.base_url }}/">azihsoyn<span class="dot">.</span>dev</a>
+      <nav class="site-nav" aria-label="サイト">
+        <a href="{{ get_url(path='posts/', trailing_slash=true) }}">記事</a>
+        <a href="{{ get_url(path='tags/', trailing_slash=true) }}">タグ</a>
+        <a href="{{ get_url(path='about/', trailing_slash=true) }}">About</a>
+      </nav>
+      <div class="header-actions">
+        <pagefind-modal-trigger placeholder="検索"></pagefind-modal-trigger>
+        <noscript><a class="search-link" href="{{ get_url(path='search/', trailing_slash=true) }}">検索</a></noscript>
+        {%- if x.picker %}
+        <button class="prefs-button" type="button" popovertarget="prefs" aria-label="表示の設定" title="表示の設定" hidden>
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 4.5h7M12 4.5h2M2 11.5h2M7 11.5h7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="10.5" cy="4.5" r="1.75" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="5.5" cy="11.5" r="1.75" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        {%- endif %}
+        <button class="theme-toggle" type="button" aria-label="配色を切り替える" hidden>
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  {%- if x.picker %}
+  <div class="prefs" id="prefs" popover>
+    <fieldset>
+      <legend class="label">テーマ</legend>
+      <div class="prefs-options">
+        {%- for o in x.styles %}
+        <label><input type="radio" name="style" value="{{ o.id }}"><span class="chip">{{ o.name }}</span></label>
+        {%- endfor %}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="label">印の色</legend>
+      <div class="prefs-options">
+        {%- for o in x.accents %}
+        <label><input type="radio" name="accent" value="{{ o.id }}"><span class="chip"><span class="swatch" data-accent="{{ o.id }}"></span>{{ o.name }}</span></label>
+        {%- endfor %}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="label">等幅フォント</legend>
+      <div class="prefs-options stack">
+        {%- for o in x.fonts %}
+        <label><input type="radio" name="font" value="{{ o.id }}"><span class="row" data-font="{{ o.id }}"><span class="name">{{ o.name }}</span><span class="sample">{fn} 0O 1lI =&gt;</span></span></label>
+        {%- endfor %}
+      </div>
+    </fieldset>
+  </div>
+  {%- endif %}
+  <pagefind-config lang="ja"></pagefind-config>
+  <pagefind-modal></pagefind-modal>
+  <main id="main" class="site-main">
+    {%- block content %}{% endblock content %}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span>© {{ now() | date(format="%Y") }} azihsoyn</span>
+      <nav aria-label="フッター">
+        <a href="{{ get_url(path='feed.xml', trailing_slash=false) }}">Feed</a>
+        <a href="https://github.com/{{ config.extra.github }}">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

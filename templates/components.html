@@ -1,0 +1,23 @@
+{% component post_list(pages, date_format="%Y-%m-%d") %}
+<ol class="post-rows">
+  {%- for page in pages %}
+  <li>
+    <a class="post-row" href="{{ page.permalink | safe }}">
+      <time class="mono" datetime="{{ page.date }}">{{ page.date | date(format=date_format) }}</time>
+      <span class="post-row-title" style="view-transition-name: post-{{ page.slug }}">{{ page.title }}</span>
+      {%- if page.taxonomies?.tags %}
+      <span class="post-row-tags mono">{% for tag in page.taxonomies.tags %}#{{ tag }}{% if not loop.last %} {% endif %}{% endfor %}</span>
+      {%- endif %}
+    </a>
+  </li>
+  {%- endfor %}
+</ol>
+{% endcomponent post_list %}
+
+{% component tag_links(tags) %}
+<ul class="tags mono">
+  {%- for tag in tags %}
+  <li><a href="{{ get_taxonomy_url(kind='tags', term=tag) }}">#{{ tag }}</a></li>
+  {%- endfor %}
+</ul>
+{% endcomponent tag_links %}

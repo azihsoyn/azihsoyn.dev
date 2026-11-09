@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="description" content="{{ config.title }} の記事を検索">
+  <link rel="canonical" href="{{ page.permalink | safe }}">
+{% endblock meta %}
+{% block content %}
+<div class="wrap prose-page">
+  <header class="page-header">
+    <p class="label mono">Search</p>
+    <h1>{{ page.title }}</h1>
+  </header>
+  <div class="search">
+    <pagefind-config instance="page" lang="ja"></pagefind-config>
+    <pagefind-input instance="page" autofocus></pagefind-input>
+    <pagefind-summary instance="page"></pagefind-summary>
+    <pagefind-results instance="page"></pagefind-results>
+  </div>
+  <noscript><p>検索には JavaScript が必要です。</p></noscript>
+</div>
+{% endblock content %}

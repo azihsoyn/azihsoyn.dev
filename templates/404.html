@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}ページが見つかりません | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="robots" content="noindex">
+{% endblock meta %}
+{% block content %}
+<div class="wrap prose-page">
+  <header class="page-header">
+    <p class="label mono">404</p>
+    <h1>ページが見つかりません</h1>
+  </header>
+  <p>URL が変わったか、削除された可能性があります。</p>
+  <p><a href="{{ config.base_url }}/">トップへ戻る</a> · <a href="{{ get_url(path='search/', trailing_slash=true) }}">検索する</a></p>
+</div>
+{% endblock content %}

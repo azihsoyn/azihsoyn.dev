@@ -1,0 +1,6 @@
+[tools]
+zola = "0.23.6"
+# 日本語の単語分割には拡張版（pagefind_extended）が必要。
+# 名前のパターンだけだと別の OS 向けのファイルを拾うので、プラットフォームごとに指定する
+"github:Pagefind/pagefind" = { version = "1.6.0", bin = "pagefind_extended", platforms = { macos-arm64 = { asset_pattern = "pagefind_extended-v*-aarch64-apple-darwin.tar.gz" }, macos-x64 = { asset_pattern = "pagefind_extended-v*-x86_64-apple-darwin.tar.gz" }, linux-x64 = { asset_pattern = "pagefind_extended-v*-x86_64-unknown-linux-musl.tar.gz" }, linux-arm64 = { asset_pattern = "pagefind_extended-v*-aarch64-unknown-linux-musl.tar.gz" } } }
+"npm:wrangler" = "4.157.0"

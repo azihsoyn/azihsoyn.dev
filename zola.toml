@@ -1,0 +1,72 @@
+base_url = "https://azihsoyn.dev"
+title = "azihsoyn.dev"
+description = "azihsoyn の技術ブログ"
+default_language = "ja"
+author = "azihsoyn"
+
+compile_sass = false
+minify_html = false
+# 全文検索は Pagefind で作るので、Zola の索引は作らない
+build_search_index = false
+
+generate_feeds = true
+feed_filenames = ["feed.xml"]
+
+generate_sitemap = true
+generate_robots_txt = true
+
+taxonomies = [
+  { name = "tags" },
+]
+
+[markdown]
+smart_punctuation = false
+external_links_no_referrer = true
+lazy_async_image = true
+bottom_footnotes = true
+github_alerts = true
+insert_anchor_links = "heading"
+
+[markdown.highlighting]
+# light-dark() で色を出力し、ページの color-scheme に追従させる
+# 文字と背景のコントラストを確保するため、高コントラスト版を使う
+style = "inline"
+light_theme = "github-light-high-contrast"
+dark_theme = "github-dark-high-contrast"
+error_on_missing_language = true
+# <pre> にも data-lang を付け、CSS でコードの言語名を出す
+data_attr_position = "both"
+
+[extra]
+github = "azihsoyn"
+# SNS は { name = "表示名", url = "https://..." } の形で並べる
+social = []
+# Cloudflare Web Analytics のトークン。空なら読み込まない
+cf_analytics_token = ""
+# 表示の設定。どの一覧も先頭のものが既定で、JavaScript なしの時と初めて来た人に出る。
+# id は static/style.css の [data-style] / [data-accent] / [data-font] に対応する
+styles = [
+  { id = "grid", name = "方眼" },
+  { id = "sumi", name = "墨" },
+]
+accents = [
+  { id = "indigo", name = "藍" },
+  { id = "none", name = "白黒" },
+  { id = "magenta", name = "赤紫" },
+  { id = "blue", name = "青" },
+  { id = "vermilion", name = "朱" },
+]
+# 等幅フォント（英字のみ配信し、日本語は OS のフォント）。ファイルは static/fonts/。
+# file があるものは、既定（先頭）の時に先読みする
+fonts = [
+  { id = "jetbrains-mono", name = "JetBrains Mono", file = "fonts/jetbrains-mono/jetbrains-mono-latin-wght-normal.woff2" },
+  { id = "system", name = "OS の等幅" },
+]
+# 読む人が表示の設定を変えられるようにするか
+picker = false
+
+[slugify]
+# 記事とタグの URL は英小文字に揃え、見出しのアンカーは日本語のまま残す
+paths = "on"
+taxonomies = "on"
+anchors = "safe"
