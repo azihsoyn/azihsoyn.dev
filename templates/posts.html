@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ section.title }} | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="description" content="{{ config.title }} の記事一覧">
+  <link rel="canonical" href="{{ section.permalink | safe }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ section.title }} | {{ config.title }}">
+  <meta property="og:description" content="{{ config.title }} の記事一覧">
+  <meta property="og:url" content="{{ section.permalink | safe }}">
+{% endblock meta %}
+{% block content %}
+<div class="wrap">
+  <header class="page-header">
+    <p class="label mono">Archive</p>
+    <h1>{{ section.title }}</h1>
+  </header>
+  {%- set_global current_year = "" %}
+  {%- for page in section.pages %}
+    {%- if page.year ~ "" != current_year %}
+      {%- if current_year != "" %}
+    </ol>
+  </section>
+      {%- endif %}
+      {%- set_global current_year = page.year ~ "" %}
+  <section class="year">
+    <h2 class="year-label mono">{{ page.year }}</h2>
+    <ol class="post-rows">
+    {%- endif %}
+      <li>
+        <a class="post-row" href="{{ page.permalink | safe }}">
+          <time class="mono" datetime="{{ page.date }}">{{ page.date | date(format="%m-%d") }}</time>
+          <span class="post-row-title">{{ page.title }}</span>
+        </a>
+      </li>
+  {%- endfor %}
+  {%- if current_year != "" %}
+    </ol>
+  </section>
+  {%- else %}
+  <p class="empty">まだ記事がありません。</p>
+  {%- endif %}
+</div>
+{% endblock content %}

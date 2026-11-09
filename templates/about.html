@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="description" content="{{ config.title }} について">
+  <link rel="canonical" href="{{ page.permalink | safe }}">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="{{ page.title }} | {{ config.title }}">
+  <meta property="og:description" content="{{ config.title }} について">
+  <meta property="og:url" content="{{ page.permalink | safe }}">
+{% endblock meta %}
+{% block content %}
+<div class="wrap prose-page">
+  <header class="page-header">
+    <p class="label mono">About</p>
+    <h1>{{ page.title }}</h1>
+  </header>
+  <div class="post-body">
+    {{ page.content | safe }}
+  </div>
+  <h2 class="label mono">Links</h2>
+  <ul class="link-list">
+    <li><span class="mono">GitHub</span><a href="https://github.com/{{ config.extra.github }}">github.com/{{ config.extra.github }}</a></li>
+    {%- for s in config.extra.social %}
+    <li><span class="mono">{{ s.name }}</span><a href="{{ s.url }}" rel="me">{{ s.url }}</a></li>
+    {%- endfor %}
+  </ul>
+</div>
+{% endblock content %}

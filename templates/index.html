@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="wrap">
+  <section class="hero">
+    <p class="label mono">azihsoyn.dev</p>
+    <h1>ソフトウェア開発で調べたこと、<br class="pc">作ったものを書いています。</h1>
+  </section>
+  {%- set posts = get_section(path="posts/_index.md") %}
+  <section class="block">
+    <header class="block-header">
+      <h2 class="label mono">新しい記事</h2>
+      {%- if posts.pages %}
+      <a class="mono" href="{{ get_url(path='posts/', trailing_slash=true) }}">すべて →</a>
+      {%- endif %}
+    </header>
+    {%- if posts.pages %}
+    {{ <post_list pages={posts.pages[:10]} /> }}
+    {%- else %}
+    <p class="empty">まだ記事がありません。</p>
+    {%- endif %}
+  </section>
+</div>
+{% endblock content %}

@@ -1,0 +1,8 @@
+/
+/404.html
+/about/
+/feed.xml
+/posts/
+/robots.txt
+/search/
+/sitemap.xml

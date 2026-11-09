@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}タグ | {{ config.title }}{% endblock title %}
+{% block meta %}
+  <meta name="description" content="{{ config.title }} のタグ一覧">
+  <link rel="canonical" href="{{ config.base_url }}/tags/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="タグ | {{ config.title }}">
+  <meta property="og:description" content="{{ config.title }} のタグ一覧">
+  <meta property="og:url" content="{{ config.base_url }}/tags/">
+{% endblock meta %}
+{% block content %}
+<div class="wrap">
+  <header class="page-header">
+    <p class="label mono">Tags</p>
+    <h1>タグ</h1>
+  </header>
+  {%- if terms %}
+  <ul class="tag-cloud mono">
+    {%- for term in terms %}
+    <li><a href="{{ term.permalink | safe }}">#{{ term.name }}<span>{{ term.pages | length }}</span></a></li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <p class="empty">まだタグがありません。</p>
+  {%- endif %}
+</div>
+{% endblock content %}

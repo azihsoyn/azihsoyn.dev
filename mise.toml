@@ -1,0 +1,5 @@
+[tools]
+zola = "0.23.6"
+# 日本語の単語分割には拡張版（pagefind_extended）が必要
+"github:Pagefind/pagefind" = { version = "1.6.0", asset_pattern = "pagefind_extended-*", bin = "pagefind_extended" }
+"npm:wrangler" = "4.157.0"
